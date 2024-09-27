@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import jpja.webapp.daos.TestDao;
 
@@ -15,15 +14,14 @@ public class ApplicationController {
     @Autowired
     private TestDao testDao;
 
-    @RequestMapping(value="/index.html", method = RequestMethod.GET)
-    @ResponseBody
-    public String index(){
-        return "hello world";
+    @RequestMapping(value="/home.html", method = RequestMethod.GET)
+    public String home(){
+        return "home.html";
     }
 
-    @RequestMapping(value="/home.html", method = RequestMethod.GET)
-    public String home(ModelMap modelMap){
+    @RequestMapping(value="/ex.html", method = RequestMethod.GET)
+    public String ex(ModelMap modelMap){
         modelMap.addAttribute("name", testDao.getFirstName());
-        return "home.html";
+        return "ex.html";
     }
 }

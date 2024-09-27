@@ -1,14 +1,137 @@
-<html>
-    <head>
-        <title>Home Page</title>
-        <link rel="stylesheet" type="text/css" href="/css/test.css" />
-        <script src="/js/home.js"></script>
-        
-    </head>
-        <body>
-            <h1>Home Page</h1>
-            <p th:text="${name}"></p>
-            <input type="button" id = "changeButton" class="red" value="click me!" onclick="changeTextButton()">
-        </body>
-    
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cleaner Contracts</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css?v=0.01}">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo">Cleaner Contracts</div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/about}">About</a></li>
+                <li><a th:href="@{/services}">Services</a></li>
+                <li><a th:href="@{/pricing}">Pricing</a></li>
+                <li><a th:href="@{/testimonials}">Testimonials</a></li>
+                <li><a th:href="@{/contact}">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" th:style="|background-image: url('@{/images/hero-image.jpg}');|">
+        <div class="hero-content">
+            <h1>Find Trusted Cleaners with Ease</h1>
+            <p>We simplify finding cleaning services for small businesses, individuals, and real estate agents. No hassle, just reliable, vetted professionals.</p>
+            <a href="#services" class="cta-btn">Get Started</a>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="services">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <h3>1. Describe Your Needs</h3>
+                <p>Choose the type of cleaning service you require—office, home, or property management.</p>
+            </div>
+            <div class="step">
+                <h3>2. Match with Cleaners</h3>
+                <p>Get matched with professional cleaners tailored to your specific needs and schedule.</p>
+            </div>
+            <div class="step">
+                <h3>3. Book and Relax</h3>
+                <p>Secure your contract and enjoy peace of mind with reliable cleaning services.</p>
+            </div>
+        </div>
+        <a href="#" class="cta-btn">Find Your Cleaner Today</a>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us">
+        <h2>Why Choose Us?</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>Reliable Cleaners</h3>
+                <p>We partner with experienced and vetted cleaners to ensure top-notch service.</p>
+            </div>
+            <div class="feature">
+                <h3>Convenient for Small Businesses</h3>
+                <p>Tailored cleaning solutions for offices, storefronts, and properties.</p>
+            </div>
+            <div class="feature">
+                <h3>For Real Estate Agents</h3>
+                <p>We help keep your listings spotless, enhancing the appeal for potential buyers.</p>
+            </div>
+            <div class="feature">
+                <h3>Easy Booking</h3>
+                <p>Simplify your process with an online contract and booking system.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <h2>What Our Clients Say</h2>
+        <blockquote>
+            <p>"They made it so easy to find a cleaner for my business, and the results have been excellent!"</p>
+            <footer>— Sarah, Small Business Owner</footer>
+        </blockquote>
+        <blockquote>
+            <p>"As a real estate agent, it's crucial to have properties that are presentable, and this service has been a lifesaver!"</p>
+            <footer>— John, Real Estate Agent</footer>
+        </blockquote>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing">
+        <h2>Pricing</h2>
+        <div class="price-list">
+            <div class="price-item">
+                <h3>Basic Cleaning Contracts</h3>
+                <p>Starting at $X</p>
+            </div>
+            <div class="price-item">
+                <h3>Real Estate Cleaning</h3>
+                <p>Customized Pricing</p>
+            </div>
+            <div class="price-item">
+                <h3>Recurring Cleaning Services</h3>
+                <p>Discounted Monthly Rates</p>
+            </div>
+        </div>
+        <a href="#" class="cta-btn">See Full Pricing</a>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section class="contact-us">
+        <h2>Contact Us</h2>
+        <form th:action="@{/contact}" method="post">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <input type="text" placeholder="Your Phone Number">
+            <textarea placeholder="Your Message"></textarea>
+            <button type="submit" class="cta-btn">Submit</button>
+        </form>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <ul class="footer-links">
+                <li><a th:href="@{/about}">About</a></li>
+                <li><a th:href="@{/services}">Services</a></li>
+                <li><a th:href="@{/privacy}">Privacy Policy</a></li>
+            </ul>
+            <p>&copy; 2024 Cleaner Contracts. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
 </html>

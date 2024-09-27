@@ -1,0 +1,177 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Header Styles */
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 1.5rem;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+}
+
+/* Hero Section */
+.hero {
+    background: "url('images/hero-image.jpg')" no-repeat center center/cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.cta-btn {
+    background-color: #007bff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+/* How It Works Section */
+.how-it-works {
+    padding: 4rem 2rem;
+    background: #fff;
+    text-align: center;
+}
+
+.how-it-works .steps {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+}
+
+.how-it-works .step {
+    flex: 1;
+    margin: 0 1rem;
+}
+
+/* Why Choose Us Section */
+.why-choose-us {
+    padding: 4rem 2rem;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.features {
+    display: flex;
+    justify-content: space-around;
+}
+
+.feature {
+    flex: 1;
+    margin: 0 1rem;
+}
+
+/* Testimonials Section */
+.testimonials {
+    padding: 4rem 2rem;
+    background: #fff;
+    text-align: center;
+}
+
+blockquote {
+    font-style: italic;
+    margin: 2rem 0;
+}
+
+/* Pricing Section */
+.pricing {
+    padding: 4rem 2rem;
+    background: #f9f9f9;
+    text-align: center;
+}
+
+.price-list {
+    display: flex;
+    justify-content: space-around;
+}
+
+.price-item {
+    flex: 1;
+    margin: 0 1rem;
+}
+
+/* Contact Us Section */
+.contact-us {
+    padding: 4rem 2rem;
+    background: #fff;
+    text-align: center;
+}
+
+.contact-us form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-us input, .contact-us textarea {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.contact-us button {
+    padding: 10px 20px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* Footer Section */
+footer {
+    background: #333;
+    color: #fff;
+    padding: 2rem 1rem;
+}
