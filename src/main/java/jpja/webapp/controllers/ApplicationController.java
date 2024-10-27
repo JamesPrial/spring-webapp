@@ -14,9 +14,9 @@ public class ApplicationController {
     @Autowired
     private TestDao testDao;
 
-    @RequestMapping(value="/home.html", method = RequestMethod.GET)
-    public String home(){
-        return "home.html";
+    @RequestMapping(value="/", method = RequestMethod.GET)
+    public String landing(){
+        return "landing.html";
     }
 
     @RequestMapping(value="/ex.html", method = RequestMethod.GET)

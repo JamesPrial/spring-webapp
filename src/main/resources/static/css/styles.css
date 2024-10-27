@@ -1,3 +1,9 @@
+/* Variables */
+:root{
+    --blue: #007bff;
+    --blue-hover: #1c7de6;
+}
+
 /* General Styles */
 * {
     margin: 0;
@@ -5,43 +11,137 @@
     box-sizing: border-box;
 }
 
-body {
+/*body styles*/
+#landing {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     background-color: #f4f4f4;
     color: #333;
 }
 
-a {
-    color: #fff;
-    text-decoration: none;
+#login {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    padding-top: 100px;
 }
+
+#error {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    padding-top: 100px;
+}
+
+
+/*
+#login {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+#error {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    justify-content: center;
+    align-items: center;
+}
+#error{
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;    
+}
+*/
 
 /* Header Styles */
 header {
-    background: #333;
-    color: #fff;
-    padding: 1rem 2rem;
+    background-color: #fff; /* White background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    position: fixed; /* Sticks to the top */
+    width: 100%; /* Full width */
+    top: 0; /* Stay at the top */
+    left: 0;
+    z-index: 1000; /* Ensure it stays on top */
+    padding: 20px 0;
+    height: 80px;
+}
+
+.container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 2000px; /* Ensures header stays at a good width */
+    margin: 0 auto; /* Center the header */
+    padding: 0px 20px; /* Padding inside the container */
 }
 
-header .logo {
-    font-size: 1.5rem;
+.logo a {
+    font-size: 1.8rem; /* Slightly larger font for the logo */
+    font-weight: bold;
+    color: var(--blue); /* Matches the button color from previous designs */
+    text-decoration: none;
 }
 
-nav ul {
-    list-style: none;
+.nav-links {
     display: flex;
+    gap: 20px; /* Space between the nav links */
+    margin-left: auto;
 }
 
-nav ul li {
-    margin-left: 20px;
+.nav-links a {
+    font-size: 1rem;
+    color: #333; /* Dark color for the text */
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
 }
 
-nav ul li a {
+.nav-links a:hover {
+    background-color: var(--blue); /* Matches the theme */
     color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+/* For Mobile Devices */
+@media (max-width: 768px) {
+    .nav-links {
+        flex-direction: column;
+        display: none; /* Hide links initially */
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 10px;
+        width: 200px;
+    }
+
+    .nav-links.active {
+        display: flex; /* Show when active (e.g., on click) */
+    }
+
+    .container {
+        justify-content: space-between;
+    }
+
+    .menu-toggle {
+        display: block;
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
 }
 
 /* Hero Section */
@@ -67,7 +167,7 @@ nav ul li a {
 }
 
 .cta-btn {
-    background-color: #007bff;
+    background-color: var(--blue);
     padding: 10px 20px;
     border-radius: 5px;
     font-size: 1rem;
@@ -161,7 +261,7 @@ blockquote {
 
 .contact-us button {
     padding: 10px 20px;
-    background: #007bff;
+    background: var(--blue);
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -174,4 +274,127 @@ footer {
     background: #333;
     color: #fff;
     padding: 2rem 1rem;
+}
+
+/* error page styles */
+
+.error-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 6rem;
+    color: var(--blue);
+}
+
+p {
+    font-size: 1.2rem;
+    color: #333;
+    margin-top: 20px;
+}
+
+.home-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 24px;
+    background-color: var(--blue);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+}
+
+.home-btn:hover {
+    background-color: #1a69be;
+}
+
+/* login pages's styles */
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.login-box {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--blue);
+}
+
+.button-container {
+    margin-top: 20px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--blue);
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1c7de6;
+}
+
+.login-footer {
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
+.login-footer a {
+    color: var(--blue);
+    text-decoration: none;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
 }

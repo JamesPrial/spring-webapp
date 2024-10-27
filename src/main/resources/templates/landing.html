@@ -5,24 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cleaner Contracts</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css?v=0.01}">
+    <link rel="stylesheet" th:href="@{/css/styles.css?v=0.4}">
 </head>
-<body>
+<body id = "landing">
 
     <!-- Header Section -->
-    <header>
-        <div class="logo">Cleaner Contracts</div>
-        <nav>
-            <ul>
-                <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/about}">About</a></li>
-                <li><a th:href="@{/services}">Services</a></li>
-                <li><a th:href="@{/pricing}">Pricing</a></li>
-                <li><a th:href="@{/testimonials}">Testimonials</a></li>
-                <li><a th:href="@{/contact}">Contact Us</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div th:replace="~{fragments/header :: header}"></div>
 
     <!-- Hero Section -->
     <section class="hero" th:style="|background-image: url('@{/images/hero-image.jpg}');|">
