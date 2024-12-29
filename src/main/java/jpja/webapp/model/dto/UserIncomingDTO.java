@@ -2,6 +2,8 @@ package jpja.webapp.model.dto;
 
 import java.util.Set;
 
+import jakarta.validation.constraints.NotBlank;
+
 /**
  * Data Transfer Object (DTO) for incoming user data.
  * This class is used to capture and validate user input during creation or
@@ -23,6 +25,7 @@ public class UserIncomingDTO extends UserSuperDTO implements UserDTOInterface {
     /**
      * The password of the user.
      */
+    @NotBlank
     private String password;
 
     /**
