@@ -10,10 +10,39 @@
 <body id = "landing">
 
     <!-- Header Section -->
-    <div th:replace="~{fragments/header :: header}"></div>
+    <header th:fragment="customer-header">
+        <div class="container">
+            <div class="logo">
+                <a href="/">My Business</a>
+            </div>
+            <nav class="nav-links">
+                <a href="#landing">Home</a>
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#testimonials">Testimonials</a>
+                <div sec:authorize="isAuthenticated()">
+                    <a th:href="@{/user/profile}">Profile</a>
+                    <a th:href="@{/logout}">Sign Out</a>
+                </div>
+                <div sec:authorize="isAnonymous()">
+                    <a th:href="@{/login}">Login</a>
+                    <a th:href="@{/register}">Register</a>
+                </div>
+            </nav>
+        </div>
+        <div th:if="${message}" class="success-message">
+            <p th:text="${message}"></p>
+        </div>
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+        <div th:if="${errors}" class="error-messages">
+            <p th:each="err : ${errors}" th:text="${err.defaultMessage}"></p>
+        </div>
+    </header>
 
     <!-- Hero Section -->
-    <section class="hero" th:style="|background-image: url('@{/images/hero-image.jpg}');|">
+    <section class="hero" th:style="|background-image: url('@{/images/hero-image.jpg}');|" id = "landing">
         <div class="hero-content">
             <h1>Find Trusted Cleaners with Ease</h1>
             <p>We simplify finding cleaning services for small businesses, individuals, and real estate agents. No hassle, just reliable, vetted professionals.</p>
@@ -22,7 +51,7 @@
     </section>
 
     <!-- How It Works Section -->
-    <section class="how-it-works" id="services">
+    <section class="how-it-works" id="about">
         <h2>How It Works</h2>
         <div class="steps">
             <div class="step">
@@ -38,11 +67,11 @@
                 <p>Secure your contract and enjoy peace of mind with reliable cleaning services.</p>
             </div>
         </div>
-        <a href="#" class="cta-btn">Find Your Cleaner Today</a>
+        <a href="/register" class="cta-btn">Find Your Cleaner Today</a>
     </section>
 
     <!-- Why Choose Us Section -->
-    <section class="why-choose-us">
+    <section class="why-choose-us" id = "services">
         <h2>Why Choose Us?</h2>
         <div class="features">
             <div class="feature">
@@ -65,7 +94,7 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="testimonials">
+    <section class="testimonials" id="testimonials">
         <h2>What Our Clients Say</h2>
         <blockquote>
             <p>"They made it so easy to find a cleaner for my business, and the results have been excellent!"</p>
@@ -97,17 +126,6 @@
         <a href="#" class="cta-btn">See Full Pricing</a>
     </section>
 
-    <!-- Contact Us Section -->
-    <section class="contact-us">
-        <h2>Contact Us</h2>
-        <form th:action="@{/contact}" method="post">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Your Email" required>
-            <input type="text" placeholder="Your Phone Number">
-            <textarea placeholder="Your Message"></textarea>
-            <button type="submit" class="cta-btn">Submit</button>
-        </form>
-    </section>
 
     <!-- Footer Section -->
     <footer>
