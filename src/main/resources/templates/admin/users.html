@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin - Users</title>
+</head>
+<body>
+    <div th:replace="~{fragments/admin-header :: admin-header}"></div>
+    <h1>Users</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.email}"></td>
+            <td>
+                <span th:each="role : ${user.roles}" th:text="${role.name} + ', '"></span>
+            </td>
+            <td>
+                <a th:href="@{'/admin/user/' + ${user.id}}">Edit</a> |
+                <form th:action="@{'/admin/user/' + ${user.id} + '/delete'}" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

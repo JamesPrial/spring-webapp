@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vendor Dashboard - EZCleanNJ</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a th:href="@{/}">EZCleanNJ</a>
+            </div>
+            <nav class="nav-links">
+                <a th:href="@{/vendor/dashboard}">Dashboard</a>
+                <a th:href="@{/vendor/jobs}">Jobs</a>
+                <a th:href="@{/vendor/profile}">Profile</a>
+                <a th:href="@{/logout}">Logout</a>
+            </nav>
+        </div>
+    </header>
+    <div th:if="${message}" class="success-message">
+        <p th:text="${message}"></p>
+    </div>
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}"></p>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Welcome, <span th:text="${#authentication.name}">Vendor</span></h1>
+        </div>
+
+        <!-- Success and Error Messages -->
+        <div th:if="${param.claimed}">
+            <p class="success-message">Booking claimed successfully!</p>
+        </div>
+        <div th:if="${param.error == 'claim_failed'}">
+            <p class="error-message">Failed to claim booking. It may have been claimed by someone else.</p>
+        </div>
+
+        <div class="dashboard-content">
+            <!-- Upcoming Jobs -->
+            <div class="card">
+                <h2>Upcoming Jobs</h2>
+                <div th:if="${jobs.isEmpty()}">
+                    <p>You have no upcoming jobs.</p>
+                    <a th:href="@{/vendor/availability}" class="button">Update Availability</a>
+                </div>
+                <div th:unless="${jobs.isEmpty()}">
+                    <ul>
+                        <li th:each="job : ${jobs}">
+                            <p>
+                                <strong>Date:</strong> <span th:text="${job.bookingDate}"></span><br>
+                                <strong>Time:</strong> <span th:text="${job.bookingTime}"></span><br>
+                                <strong>Location:</strong> <span th:text="${job.location.address}"></span>
+                            </p>
+                            <a th:href="@{/vendor/jobs/manage/{id}(id=${job.id})}" class="button">Manage</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Available Bookings -->
+            <div class="card">
+                <h2>Available Bookings</h2>
+                <div th:if="${availableBookings.isEmpty()}">
+                    <p>No available bookings at the moment.</p>
+                </div>
+                <div th:unless="${availableBookings.isEmpty()}">
+                    <ul>
+                        <li th:each="booking : ${availableBookings}">
+                            <p>
+                                <strong>Date:</strong> <span th:text="${booking.bookingDate}"></span><br>
+                                <strong>Time:</strong> <span th:text="${booking.bookingTime}"></span><br>
+                                <strong>Location:</strong> <span th:text="${booking.location.address}"></span>
+                            </p>
+                            <form th:action="@{/vendor/bookings/claim}" method="post">
+                                <input type="hidden" name="bookingId" th:value="${booking.id}" />
+                                <button type="submit" class="button">Claim Booking</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Earnings Summary -->
+            <div class="card">
+                <h2>Earnings Summary</h2>
+                <p><strong>Total Earnings:</strong> $<span th:text="${totalEarnings}">0.00</span></p>
+                <p><strong>Pending Payouts:</strong> $<span th:text="${pendingPayouts}">0.00</span></p>
+                <a th:href="@{/vendor/transactions}" class="button">View Transactions</a>
+            </div>
+
+            <!-- Account Settings -->
+            <div class="card">
+                <h2>Account Settings</h2>
+                <p>Manage your profile and preferences.</p>
+                <a th:href="@{/vendor/profile}" class="button">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 EZCleanNJ. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

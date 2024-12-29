@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resend Verification</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body id="resend-verification">
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="verification-container">
+        <div class="verification-box">
+            <h1 class="verification-title">Email Verification Required</h1>
+            <p class="verification-message">
+                Your email address <strong th:text="${email}"></strong> is not verified yet. Please check your inbox for a verification email.
+            </p>
+            <p class="verification-message">
+                Didn't receive the email? Click the button below to resend the verification email.
+            </p>
+
+            <!-- Display success or error messages -->
+            <div th:if="${message}">
+                <p th:text="${message}"></p>
+            </div>
+
+            <!-- Resend Verification Email Button -->
+            <form th:action="@{/resend-verification}" method="post">
+                <input type="hidden" name="email" th:value="${email}" />
+                <button type="submit" class="verification-button resend-btn">Resend Verification Email</button>
+            </form>
+
+            <!-- Return to Login Button -->
+            <button class="verification-button home-btn" onclick="window.location.href='/login';">Return to Login</button>
+        </div>
+    </main>
+</body>
+</html>

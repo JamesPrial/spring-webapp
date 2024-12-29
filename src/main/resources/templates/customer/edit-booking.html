@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Booking - EZCleanNJ</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/customer-header :: customer-header}"></div>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Edit Booking</h1>
+        </div>
+        <div class="dashboard-content">
+            <div class="card">
+                <h2>Booking Details</h2>
+                <p><strong>Date:</strong> <span th:text="${booking.bookingDate}"></span></p>
+                <p><strong>Location:</strong> <span th:text="${booking.location.address}"></span></p>
+                <p><strong>Price:</strong> $<span th:text="${booking.price}"></span></p>
+
+                <!-- Form to Reschedule -->
+                <form th:action="@{/customer/bookings/edit/{id}(id=${booking.id})}" method="post">
+                    <label for="newDate">New Date:</label>
+                    <input type="date" id="newDate" name="newDate" />
+
+                    <label for="newTime">New Time:</label>
+                    <input type="time" id="newTime" name="newTime" />
+
+                    <button type="submit" class="button">Reschedule</button>
+                </form>
+
+                <!-- Cancel Booking -->
+                <form th:action="@{/customer/bookings/cancel/{id}(id=${booking.id})}" method="post">
+                    <button type="submit" class="button">Cancel Booking</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 EZCleanNJ. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

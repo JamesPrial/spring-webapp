@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Customer Profile - EZCleanNJ</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/customer-header :: customer-header}"></div>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Edit Profile</h1>
+        </div>
+        <div class="dashboard-content">
+            <div class="card">
+                <form th:action="@{/customer/profile}" method="post">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" name="firstName" th:value="${user.firstName}" placeholder="Your First Name" />
+
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" name="lastName" th:value="${user.lastName}" placeholder="Your Last Name" />
+
+                    <label for="phone">Phone Number:</label>
+                    <input type="text" id="phone" name="phone" th:value="${user.phone}" placeholder="please just the numbers" />
+
+
+
+                    <button type="submit" class="button">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 EZCleanNJ. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

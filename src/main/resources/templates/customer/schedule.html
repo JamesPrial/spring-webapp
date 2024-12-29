@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Schedule a Cleaning - EZCleanNJ</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/customer-header :: customer-header}"></div>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Schedule a New Booking</h1>
+        </div>
+        <div class="dashboard-content">
+            <div class="card">
+                <form th:action="@{/customer/schedule}" method="post">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time" required>
+
+                    <label for="typeId">Type:</label>
+                    <select id="typeId" name="typeId">
+                        <option value="" disabled selected>Select a service type</option>
+                        <option th:each="t : ${types}"
+                                th:value="${t.id}"
+                                th:text="${t.description}">
+                        </option>
+                    </select>
+                    <div>
+                        <label for="addressId">Address:</label>
+    
+                        <!-- If no addresses, show a message -->
+                        <div th:if="${addresses == null || addresses.isEmpty()}">
+                            <p>You have no saved addresses. Please add one:</p>
+                            <a th:href="@{/customer/address}" class="button small-btn">Manage Addresses</a>
+                        </div>
+    
+                        <!-- If addresses exist, show the dropdown -->
+                        <div th:unless="${addresses == null || addresses.isEmpty()}">
+                            <select id="addressId" name="addressId">
+                                <option value="" disabled selected>Select an Address</option>
+                                <option th:each="addr : ${addresses}"
+                                        th:value="${addr.id}"
+                                        th:text="${addr.nickname + ' - ' + addr.address}">
+                                </option>
+                            </select>
+                            <a th:href="@{/customer/address}" class="button small-btn">Manage Addresses</a>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="button">Schedule</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 EZCleanNJ. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

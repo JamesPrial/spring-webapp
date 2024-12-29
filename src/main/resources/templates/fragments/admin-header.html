@@ -1,0 +1,25 @@
+<header th:fragment="admin-header">
+    <div class="container">
+        <div class="logo">
+            <a href="/">My Business</a>
+        </div>
+        <nav class="nav-links">
+            <div class="logo">
+                <a th:href="@{/}">EZCleanNJ</a>
+            </div>
+            <a th:href="@{/admin/dashboard}">Dashboard</a>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="nav-link logout-link">Logout</button>
+            </form>
+        </nav>
+    </div>
+    <div th:if="${message}" class="success-message">
+        <p th:text="${message}"></p>
+    </div>
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}"></p>
+    </div>
+    <div th:if="${errors}" class="error-messages">
+        <p th:each="err : ${errors}" th:text="${err.defaultMessage}"></p>
+    </div>
+</header>

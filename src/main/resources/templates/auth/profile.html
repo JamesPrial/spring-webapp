@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+    <h2>User Profile</h2>
+    <form th:action="@{/user/profile}" th:object="${user}" method="post">
+        <label for="email">Email:</label>
+        <input type="text" th:field="*{email}" placeholder="Email" readonly />
+
+        <label for="name">Name:</label>
+        <input type="text" th:field="*{name}" placeholder="Your Name" />
+
+        <!-- Add other fields here as necessary -->
+
+        <button type="submit">Update Profile</button>
+    </form>
+</body>
+</html>

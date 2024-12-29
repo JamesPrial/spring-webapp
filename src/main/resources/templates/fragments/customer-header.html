@@ -1,0 +1,26 @@
+<header th:fragment="customer-header">
+    <div class="container">
+        <div class="logo">
+            <a href="/">My Business</a>
+        </div>
+        <nav class="nav-links">
+            <div class="logo">
+                <a th:href="@{/}">EZCleanNJ</a>
+            </div>
+            <a th:href="@{/customer/dashboard}">Dashboard</a>
+            <a th:href="@{/customer/bookings}">Bookings</a>
+            <a th:href="@{/customer/profile}">Profile</a>
+            <a th:href="@{/customer/address}">Addresses</a>
+            <a th:href="@{/logout}">Logout</a>
+        </nav>
+    </div>
+    <div th:if="${message}" class="success-message">
+        <p th:text="${message}"></p>
+    </div>
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}"></p>
+    </div>
+    <div th:if="${errors}" class="error-messages">
+        <p th:each="err : ${errors}" th:text="${err.defaultMessage}"></p>
+    </div>
+</header>

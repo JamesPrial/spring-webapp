@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard - EZCleanNJ</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+    <!-- Header -->
+
+    <div th:replace="~{fragments/admin-header :: admin-header}"></div>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Admin Dashboard</h1>
+        </div>
+        <div class="dashboard-content single-column">
+            <!-- Overview Card -->
+            <div class="card">
+                <h2>Overview</h2>
+                <p>Total Users: <span th:text="${userCount}">0</span></p>
+                <p>Total Bookings: <span th:text="${bookingCount}">0</span></p>
+            </div>
+
+            <!-- Management Links -->
+            <div class="card">
+                <h2>Management Links</h2>
+                <ul>
+                    <li><a th:href="@{/admin/users}">Manage Users</a></li>
+                    <li><a th:href="@{/admin/bookings}">Manage Bookings</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 EZCleanNJ. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

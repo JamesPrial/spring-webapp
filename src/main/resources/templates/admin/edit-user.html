@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit User</title>
+</head>
+
+<body>
+    <div th:replace="~{fragments/admin-header :: admin-header}"></div>
+    <h1>Edit User</h1>
+    <form th:action="@{'/admin/user/' + ${user.id}}" th:object="${user}" method="post">
+        <label>Email:</label>
+        <div th:if="${user.email != null}">
+            <input type="text" th:field="*{email}" placeholder="Leave blank to keep current email" />
+        </div>
+
+        <!-- Dropdown for roles -->
+        <label>Roles:</label>
+        <select th:field="*{roles}" multiple>
+            <option th:each="role : ${roles}"
+                    th:value="${role.id}"
+                    th:text="${role.roleName}"
+                    th:selected="${user.roles.contains(role)}">
+            </option>
+        </select>
+
+        <button type="submit">Save</button>
+    </form>
+    <a href="/admin/users">Back to Users</a>
+</body>
+</html>

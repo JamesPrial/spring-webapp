@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Customer Dashboard - EZCleanNJ</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/customer-header :: customer-header}"></div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Welcome, <span th:text="${#authentication.name}">Customer</span></h1>
+        </div>
+        <div class="dashboard-content">
+            <!-- Upcoming bookings -->
+            <div class="card">
+                <h2>Upcoming Bookings</h2>
+                <div th:if="${bookings.isEmpty()}">
+                    <p>You have no upcoming bookings.</p>                    
+                </div>
+                <div th:unless="${bookings.isEmpty()}">
+                    <ul>
+                        <li th:each="booking : ${bookings}">
+                            <p>
+                                <strong>Date:</strong> <span th:text="${booking.bookingDate}"></span><br>
+                                <strong>Time:</strong> <span th:text="${booking.bookingTime}"></span><br>
+                                <strong>Cleaner:</strong> <span th:text="${booking.vendorIdentifier}"></span>
+                            </p>
+                            <a th:href="@{/customer/bookings/edit/{id}(id=${booking.id})}" class="button">Manage</a>
+                        </li>
+                    </ul>
+                </div>
+                <a th:href="@{/customer/schedule}" class="button">Schedule Now</a>
+            </div>
+
+            <!-- Recent prevBookings -->
+            <div class="card">
+                <h2>Completed Bookings</h2>
+                <div th:if="${prevBookings.isEmpty()}">
+                    <p>No previous bookings</p>
+                </div>
+                <div th:unless="${prevBookings.isEmpty()}">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="prevBooking : ${prevBookings}">
+                                <td th:text="${prevBooking.bookingDate}"></td>
+                                <td>$<span th:text="${prevBooking.amount}"></span></td>
+                                <td>
+                                    <a th:href="@{/customer/review/{id}(id=${prevBooking.id})}" class="btn">
+                                        Review Booking
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Account Settings -->
+            <div class="card">
+                <h2>Account Settings</h2>
+                <p>Manage your personal information and preferences.</p>
+                <a th:href="@{/customer/profile}" class="button">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 EZCleanNJ. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

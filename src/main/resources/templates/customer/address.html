@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Addresses - EZCleanNJ</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/customer-header :: customer-header}"></div>
+
+    <!-- Content -->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Manage Addresses</h1>
+        </div>
+        <div class="dashboard-content">
+            <div class="card">
+                <h2>Your Addresses</h2>
+
+                <!-- If no addresses, prompt user to add one -->
+                <div th:if="${addresses.isEmpty()}">
+                    <p>You have no saved addresses. Add one below.</p>
+                </div>
+
+                <!-- Table of existing addresses -->
+                <div th:unless="${addresses.isEmpty()}">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nickname</th>
+                                <th>Address</th>
+                                <th>Unit</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Zip Code</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="addr : ${addresses}">
+                                <td th:text="${addr.nickname}"></td>
+                                <td th:text="${addr.address}"></td>
+                                <td th:text="${addr.unit}"></td>
+                                <td th:text="${addr.city}"></td>
+                                <td th:text="${addr.state}"></td>
+                                <td th:text="${addr.zip}"></td>
+                                <td>
+                                    <!-- Edit link -->
+                                    <a th:href="@{/customer/address/edit/{id}(id=${addr.id})}" class="btn">
+                                        Edit
+                                    </a>
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Form to Add New Address -->
+            <div class="card">
+                <h2>Add a New Address</h2>
+                <form th:action="@{/customer/address}" method="post" th:object="${newAddress}">
+                    <div>
+                        <label for="nickname">Nickname (e.g., Home, Office):</label>
+                        <input type="text" id="nickname" th:field="*{nickname}" placeholder="e.g. Home" />
+                        <div th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></div>
+                    </div>
+
+                    <div>
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" th:field="*{address}" placeholder="123 Main St" required />
+                        <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                    </div>
+
+                    <div>
+                        <label for="street">Unit:</label>
+                        <input type="text" id="unit" th:field="*{unit}" placeholder="APT 3 (can be blank)"/>
+                        <div th:if="${#fields.hasErrors('unit')}" th:errors="*{unit}"></div>
+                    </div>
+
+                    <div>
+                        <label for="city">City:</label>
+                        <input type="text" id="city" th:field="*{city}" placeholder="Your City" required />
+                        <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
+                    </div>
+
+                    <div>
+                        <label for="state">State:</label>
+                        <input type="text" id="state" th:field="*{state}" placeholder="e.g., NJ" required />
+                        <div th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></div>
+                    </div>
+
+                    <div>
+                        <label for="zip">Zip Code:</label>
+                        <input type="text" id="zip" th:field="*{zip}" placeholder="e.g. 07001" required />
+                        <div th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}"></div>
+                    </div>
+
+                    <div>
+                        <select id="typeId" name="typeId" th:field="*{typeId}">
+                            <option value="" disabled selected>Select the option which describes this location best:</option>
+                            <option th:each="type : ${types}"
+                                    th:value="${type.id}"
+                                    th:text="${type.description}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="button">Add Address</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 EZCleanNJ. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

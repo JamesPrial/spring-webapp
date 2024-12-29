@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Review Booking - EZCleanNJ</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+    <div th:replace="~{fragments/customer-header :: customer-header}"></div>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Review Booking</h1>
+        </div>
+        <div class="dashboard-content">
+            <div class="card">
+                <h2>Booking Details</h2>
+                <p><strong>Date:</strong> <span th:text="${booking.bookingDate}"></span></p>
+                <p><strong>Location:</strong> <span th:text="${booking.location.address}"></span></p>
+                <p><strong>Amount Paid:</strong> $<span th:text="${booking.price}"></span></p>
+
+                <!-- Review Form -->
+                <form th:action="@{/customer/review/{id}(id=${booking.id})}" method="post">
+                    <label for="rating">Rating (1-5):</label>
+                    <input type="number" id="rating" name="rating" min="1" max="5" required />
+
+                    <label for="comment">Comment:</label>
+                    <textarea id="comment" name="comment" placeholder="Leave your feedback"></textarea>
+
+                    <button type="submit" class="button">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 EZCleanNJ. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
