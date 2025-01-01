@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN") // Admin-only pages
                 .requestMatchers("/vendor/**").hasRole("VENDOR")
                 .requestMatchers("/customer/**").hasRole("CUSTOMER")
-                .requestMatchers("/login", "/register", "/", "error", "/css/**", "/images/**", "/resend-verification", "/verify").permitAll()
+                .requestMatchers("/login", "/register", "/", "/error", "/css/**", "/images/**", "/resend-verification", "/verify").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
