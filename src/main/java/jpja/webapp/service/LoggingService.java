@@ -118,4 +118,8 @@ public class LoggingService {
     public void logActivity(String ip, String method, String uri, String query) {
         activityLogger.info("IP: {} - Method: {} - URI: {} - Query: {}", ip, method, uri, query);
     }
+
+    public void logActivityAsWarn(String ip, String method, String uri, String query) {
+        activityLogger.warn("IP: {} - Method: {} - URI: {} - Query: {}", ip, method, uri, query);
+    }
 }

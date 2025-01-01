@@ -26,7 +26,14 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
         String httpMethod = request.getMethod();
         String requestUri = request.getRequestURI();
         String query = request.getQueryString();
-        loggingService.logActivity(clientIp, httpMethod, requestUri, query);
+        if(query == null || query.equals("")){
+            query = "NA";
+        }
+        if(requestUri.equals("/") && !query.equals("NA")){
+            loggingService.logActivityAsWarn(clientIp, httpMethod, requestUri, query);
+        }else{
+            loggingService.logActivity(clientIp, httpMethod, requestUri, query);
+        }
         filterChain.doFilter(request, response);
     }
 }
