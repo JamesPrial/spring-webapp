@@ -24,7 +24,8 @@ import jpja.webapp.repositories.LoginRepository;
 public class LoggingService {
 
     private final LoginRepository loginRepository;
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoggingService.class);
+    private static final Logger activityLogger = LoggerFactory.getLogger("jpja.logging.activity");
 
     /**
      * Constructs a new instance of LoggingService with the provided
@@ -112,5 +113,9 @@ public class LoggingService {
      */
     public void logBindingResults(String source, List<ObjectError> errors) {
         logBindingResults(source, errors, false);
+    }
+
+    public void logActivity(String ip, String method, String uri, String query) {
+        activityLogger.info("IP: {} - Method: {} - URI: {} - Query: {}", ip, method, uri, query);
     }
 }

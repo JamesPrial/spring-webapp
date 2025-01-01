@@ -1,4 +1,4 @@
-package jpja.webapp.service;
+package jpja.webapp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

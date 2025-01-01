@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>jpja.webapp</groupId>
-	<artifactId>application</artifactId>
+	<artifactId>ezcleannj</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>application</name>
+	<name>ezcleannj</name>
 	<description>Demo project for Spring Boot</description>
 	<url />
 	<licenses>
