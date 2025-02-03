@@ -4,23 +4,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public abstract class Log {
+    private int id;
     private LocalDate date;
     private LocalTime time;
     private Level level;
-    private String source;
 
-    public Log(LocalDate date, LocalTime time, Level level) {
+    public Log(int id, LocalDate date, LocalTime time, Level level) {
+        this.id = id;
         this.date = date;
         this.time = time;
         this.level = level;
-        this.source = null;
-    }
-
-    public Log(LocalDate date, LocalTime time, Level level, String source) {
-        this.date = date;
-        this.time = time;
-        this.level = level;
-        this.source = source;
     }
 
     public LocalDate getDate() {
@@ -35,12 +28,6 @@ public abstract class Log {
     public void setTime(LocalTime time) {
         this.time = time;
     }
-    public String getSource() {
-        return source;
-    }
-    public void setSource(String source) {
-        this.source = source;
-    }
 
     public Level getLevel() {
         return level;
@@ -48,7 +35,18 @@ public abstract class Log {
     public void setLevel(Level level) {
         this.level = level;
     }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     abstract String getMessage();
     abstract void setMessage(String message);
+    abstract String getSource();
+    abstract void setSource(String source);
+
+    abstract boolean isException();
 }

@@ -1,0 +1,170 @@
+package jpja.webapp.service;
+
+import org.springframework.stereotype.Service;
+
+import jpja.webapp.logging.Log;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+@Service
+public class LogParserService {
+
+    private static final String LOG_DIR_PATH = "logs/";
+    private static final String APP_LOG_PREFIX = "app.";
+    private static final String ACTIVITY_LOG_PREFIX = "activity.";
+    private static final String LOG_FILE_SUFFIX = ".log";
+    private static final int MAX_LINES = 200;
+    private static final int BUFFER_SIZE = 4096; // 4KB buffer
+
+    // Define the log pattern based on your logback-spring.xml
+    private static final Pattern LOG_PATTERN = Pattern.compile(
+        "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})\\s+" + // Timestamp
+        "(\\w+)\\s+" +                                       // Log level
+        "(\\d+)\\s+---\\s+" +                                // Process ID and separator
+        "\\[(.*?)\\]\\s+" +                                  // Thread
+        "(\\S+)\\s+:\\s+" +                                  // Logger
+        "(.*)"                                               // Message
+    );
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    /**
+     * Lists all available log files sorted by date descending.
+     */
+    public List<String> listAvailableLogFiles() {
+        File logDir = new File(LOG_DIR_PATH);
+        if (!logDir.exists() || !logDir.isDirectory()) {
+            return new ArrayList<>();
+        }
+
+        File[] logFiles = logDir.listFiles((dir, name) ->
+            (name.startsWith(APP_LOG_PREFIX) || name.startsWith(ACTIVITY_LOG_PREFIX)) &&
+            name.endsWith(LOG_FILE_SUFFIX)
+        );
+
+        if (logFiles == null) {
+            return new ArrayList<>();
+        }
+
+        // Sort files by date descending
+        return List.of(logFiles).stream()
+                .map(File::getName)
+                .sorted((a, b) -> b.compareTo(a)) // Descending order
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieves recent logs from a specified log file.
+     * If logFileName is null or empty, defaults to the latest log file.
+     */
+    public List<Log> getRecentLogs(int maxLines, String logFileName) {
+        List<Log> logEntries = new ArrayList<>();
+        String targetLogFile = (logFileName == null || logFileName.isEmpty()) ? getLatestLogFile() : logFileName;
+        File logFile = new File(LOG_DIR_PATH + targetLogFile);
+
+        if (!logFile.exists()) {
+            return logEntries; // File not found or doesn't exist yet
+        }
+
+        try {
+            logEntries = readLastNLines(logFile, maxLines);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return logEntries;
+    }
+
+    /**
+     * Retrieves the latest log file based on naming convention.
+     */
+    private String getLatestLogFile() {
+        List<String> logFiles = listAvailableLogFiles();
+        return logFiles.isEmpty() ? "" : logFiles.get(0);
+    }
+
+    /**
+     * Reads the last N lines of a file using RandomAccessFile.
+     *
+     * @param file     The log file to read.
+     * @param maxLines Number of lines to read from the end.
+     * @return List of Log objects representing the last N lines.
+     * @throws IOException If an I/O error occurs.
+     */
+    private List<Log> readLastNLines(File file, int maxLines) throws IOException {
+        List<String> lines = new ArrayList<>();
+        try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+            long fileLength = raf.length();
+            long pointer = fileLength - 1;
+            int lineCount = 0;
+            StringBuilder sb = new StringBuilder();
+
+            while (pointer >= 0 && lineCount < maxLines) {
+                raf.seek(pointer);
+                int readByte = raf.readByte();
+
+                if (readByte == 0xA) { // LF
+                    if (sb.length() > 0) {
+                        lines.add(sb.reverse().toString());
+                        sb = new StringBuilder();
+                        lineCount++;
+                    }
+                } else if (readByte == 0xD) { // CR
+                    // Ignore CR
+                } else {
+                    sb.append((char) readByte);
+                }
+                pointer--;
+            }
+
+            // Add the last line if needed
+            if (sb.length() > 0 && lineCount < maxLines) {
+                lines.add(sb.reverse().toString());
+            }
+        }
+
+        // Convert lines to Log objects
+        List<Log> logEntries = new ArrayList<>();
+        for (int i = lines.size() - 1; i >= 0; i--) { // Reverse to maintain chronological order
+            Log entry = parseLogLine(lines.get(i));
+            if (entry != null) {
+                logEntries.add(entry);
+            }
+        }
+
+        return logEntries;
+    }
+
+    /**
+     * Parses a single log line into a Log object.
+     */
+    private Log parseLogLine(String line) {
+        Matcher matcher = LOG_PATTERN.matcher(line);
+        if (matcher.matches()) {
+            try {
+                LocalDateTime timestamp = LocalDateTime.parse(matcher.group(1), DATE_TIME_FORMATTER);
+                String level = matcher.group(2);
+                String processId = matcher.group(3);
+                String thread = matcher.group(4);
+                String logger = matcher.group(5);
+                String message = matcher.group(6);
+
+                return new Log(timestamp, level, processId, thread, logger, message);
+            } catch (Exception e) {
+                // Handle parsing exceptions, possibly log them
+                e.printStackTrace();
+            }
+        }
+        return null; // Return null if the line doesn't match the pattern
+    }
+}
+ 

@@ -1,5 +1,5 @@
 package jpja.webapp.logging;
 
 public enum Level {
-    INFO, WARN, DEBUG, ERROR, DEFAULT
+    INFO, WARN, DEBUG, ERROR, ACTIVITY, DEFAULT
 }

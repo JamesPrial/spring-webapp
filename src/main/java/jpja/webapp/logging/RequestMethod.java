@@ -1,5 +1,5 @@
 package jpja.webapp.logging;
 
 public enum RequestMethod {
-    GET, SET
+    GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH, DEFAULT
 }

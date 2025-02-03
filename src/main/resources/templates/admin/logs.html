@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Log Viewer</title>
+    <style>
+        /* Minimal styling for clarity */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        h1, h2 {
+            margin-bottom: 16px;
+            color: #444;
+        }
+        .log-selector {
+            margin-bottom: 20px;
+        }
+        .log-selector form {
+            display: inline-block;
+        }
+        .log-table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 900px;
+            background-color: #fff;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .log-table th,
+        .log-table td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .log-table th {
+            background-color: #f0f0f0;
+            font-weight: 500;
+        }
+        .log-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        .no-logs {
+            font-style: italic;
+            color: #888;
+        }
+
+        /* MODAL STYLES */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place, always on top */
+            z-index: 1000; /* Sit on top of other content */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Semi-transparent overlay */
+        }
+        .modal-content {
+            position: absolute; /* Let us center it in the viewport */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%); /* Center the modal horizontally & vertically */
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 70%;
+            max-width: 800px; /* Optional max width */
+            max-height: 80vh; /* Limit vertical size */
+            overflow-y: auto; /* Scroll if content is tall */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        /* COLOR CODING FOR LEVEL */
+        .level-DEBUG {
+            color: #555;
+        }
+        .level-INFO {
+            color: #007bff; /* Blue-ish */
+        }
+        .level-WARN {
+            color: orange;
+        }
+        .level-ERROR {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Log Viewer</h1>
+
+    <!-- 1) Log File Selection Form -->
+    <div class="log-selector">
+        <form method="get" th:action="@{/admin/logs}">
+            <label for="logFile">Select Log File:</label>
+            <select name="logFile" id="logFile">
+                <option th:each="file : ${availableLogs}" th:value="${file}" th:text="${file}"
+                    th:selected="${file == selectedLog}">
+                </option>
+            </select>
+    
+            <label for="levelFilter">Filter Level:</label>
+        <select name="levelFilter" id="levelFilter">
+            <!-- Levels could come from model or be hardcoded -->
+            <option th:value="ALL"
+                    th:text="'ALL'"
+                    th:selected="${levelFilter == 'ALL'}"></option>
+            <option th:each="lvl : ${allLevels}"
+                    th:value="${lvl}"
+                    th:text="${lvl}"
+                    th:selected="${lvl == levelFilter}">
+            </option>
+        </select>
+            <button type="submit">View Logs</button>
+        </form>
+    </div>
+
+    <!-- 2) App Logs Table (if present) -->
+    <div th:if="${appLogs != null and !appLogs.isEmpty()}">
+        <h2>Application Logs</h2>
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Level</th>
+                    <th>Thread</th>
+                    <th>Logger</th>
+                    <th>Message</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="log : ${appLogs}">
+                    <!-- LocalDate date, LocalTime time, Level level, String thread, String logger, String message, 
+                     String notes (optional), StackTrace trace (optional) -->
+                    <td th:text="${log.date}">2025-01-20</td>
+                    <td th:text="${log.time}">10:34:56</td>
+                    <td th:text="${log.level}" th:classappend="'level-' + ${log.level.toString()}">
+                        INFO
+                    </td>
+                    <td th:text="${log.thread}">main</td>
+                    <td th:text="${log.logger}">com.example.MyClass</td>
+                    <td th:text="${log.message}">Some log message...</td>
+                    <td>
+                        <!-- Show Note Button -->
+                        <button th:if="${log.notes != null}"
+                                type="button"
+                                th:attr="data-content=${log.notes}"
+                                onclick="openModal('Note', this.getAttribute('data-content'))">
+                            Show Note
+                        </button>
+                        
+                        <!-- Show Trace Button -->
+                        <button th:if="${log.trace != null}"
+                                type="button"
+                                th:attr="data-content=${log.trace}"
+                                onclick="openModal('Stack Trace', this.getAttribute('data-content'))">
+                            Show Trace
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 3) Activity Logs Table (if present) -->
+    <div th:if="${activityLogs != null and !activityLogs.isEmpty()}">
+        <h2>Activity Logs</h2>
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Source</th>
+                    <th>Method</th>
+                    <th>URI</th>
+                    <th>Query</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="log : ${activityLogs}">
+                    <!-- int id, LocalDate date, LocalTime time, Level level, String source, 
+                     RequestMethod method, String uri, String query -->
+                    <td th:text="${log.id}">1</td>
+                    <td th:text="${log.date}">2025-01-20</td>
+                    <td th:text="${log.time}">10:34:56</td>
+                    <td th:text="${log.source}">ControllerX</td>
+                    <td th:text="${log.method}">GET</td>
+                    <td th:text="${log.uri}">/users</td>
+                    <td th:text="${log.query}">id=123</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p class="no-logs"
+        th:if="${activityLogs != null and activityLogs.isEmpty() and appLogs != null and appLogs.isEmpty()}">
+        No log selected.
+    </p>
+
+    <!-- 4) Modal Structure -->
+    <div id="contentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Content</h2>
+            <pre id="modalBody">Content goes here...</pre>
+        </div>
+    </div>
+
+    <!-- 5) JavaScript for Modal Handling -->
+    <script>
+        // Function to open the modal with specific content
+        function openModal(title, content) {
+            // Set the modal title and body
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerText = content;
+
+            // Display the modal
+            document.getElementById('contentModal').style.display = 'block';
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById('contentModal').style.display = 'none';
+        }
+
+        // Close the modal when clicking outside of the modal content
+        window.onclick = function (event) {
+            var modal = document.getElementById('contentModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+
+</body>
+
+</html>

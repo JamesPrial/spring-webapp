@@ -1,5 +1,7 @@
 package jpja.webapp.controllers;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,16 +15,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.validation.Valid;
 import jpja.webapp.exceptions.database.ConflictingDataException;
 import jpja.webapp.factories.UserDTOFactory;
+import jpja.webapp.logging.AppLog;
+import jpja.webapp.logging.Level;
+import jpja.webapp.logging.Log;
 import jpja.webapp.model.dto.ModifierDTO;
 import jpja.webapp.model.dto.UserIncomingDTO;
 import jpja.webapp.model.dto.UserOutgoingDTO;
 import jpja.webapp.model.entities.Role;
 import jpja.webapp.service.BookingService;
 import jpja.webapp.service.CustomUserDetailsService;
+import jpja.webapp.service.LogParserService;
 
 /**
  * Controller responsible for handling administration-related requests,
@@ -35,10 +42,13 @@ import jpja.webapp.service.CustomUserDetailsService;
 public class AdminController {
     private final CustomUserDetailsService userService;
     private final BookingService bookingService;
+    private final LogParserService logService;
 
-    public AdminController(CustomUserDetailsService userService, BookingService bookingService) {
+    public AdminController(CustomUserDetailsService userService, BookingService bookingService,
+            LogParserService logService) {
         this.userService = userService;
         this.bookingService = bookingService;
+        this.logService = logService;
     }
 
     /**
@@ -123,4 +133,34 @@ public class AdminController {
         userService.deleteUser(id);
         return "redirect:/admin/users";
     }
+
+    @GetMapping("/logs")
+    public String getLogs(
+            @RequestParam(value = "logFile", required = false) String selectedLog,
+            @RequestParam(name = "levelFilter", defaultValue = "ALL") String levelFilter, Model model)
+            throws IOException {
+        List<String> logFiles = logService.listAvailableLogFiles();
+        model.addAttribute("availableLogs", logFiles);
+        List<Level> allLevels = List.of(Level.values());
+        List<String> levelsStr = new ArrayList<String>();
+        for(Level level : allLevels){
+            levelsStr.add(level.toString());
+        }
+        model.addAttribute("allLevels", levelsStr);
+
+        model.addAttribute("selectedLog", selectedLog);
+        model.addAttribute("levelFilter", levelFilter);
+
+        if (selectedLog != null && !selectedLog.isEmpty()) {
+            boolean isActivity = selectedLog.contains("activity");
+            List<Log> logs = logService.parseLogFile(selectedLog, isActivity, levelFilter);
+            List<Log> appLogs = isActivity ? null : logs;
+            List<Log> activityLogs = isActivity ? logs : null;
+        
+            model.addAttribute("appLogs", appLogs);
+            model.addAttribute("activityLogs", activityLogs);
+        }
+        return "admin/logs";
+    }
+
 }

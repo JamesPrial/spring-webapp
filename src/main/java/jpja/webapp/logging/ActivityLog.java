@@ -4,22 +4,25 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class ActivityLog extends Log {
+    //source = IP address
+    private String source;
     private RequestMethod method;
     private String uri;
     private String query;
 
     private static final int MESSAGE_VARS = 4;
     
-    public ActivityLog(LocalDate date, LocalTime time, Level level, String source, RequestMethod method, String uri,
+    public ActivityLog(int id, LocalDate date, LocalTime time, Level level, String source, RequestMethod method, String uri,
             String query) {
-        super(date, time, level, source);
+        super(id, date, time, level);
+        this.source = source;
         this.method = method;
         this.uri = uri;
         this.query = query;
     }
 
-    public ActivityLog(LocalDate date, LocalTime time, Level level, String message) {
-        super(date, time, level);
+    public ActivityLog(int id, LocalDate date, LocalTime time, Level level, String message) {
+        super(id, date, time, level);
         setMessage(message);
     }
     
@@ -107,5 +110,17 @@ public class ActivityLog extends Log {
 
     private boolean areParamsNotNull(){
         return this.getSource() != null && this.getMethod() != null && this.getUri() != null && this.getQuery() != null;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public boolean isException(){
+        return false;
     }
 }
